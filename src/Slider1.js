@@ -1,11 +1,12 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {shadowStyle} from './style';
 import Animated, {
   useSharedValue,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useDerivedValue,
+  runOnJS,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import {clamp} from './utils';
@@ -18,6 +19,10 @@ const MAX_RANGE = 20;
 const Slider1 = () => {
   const translateX = useSharedValue(0);
   const isSliding = useSharedValue(false);
+
+  const onDraggedSuccess = () => {
+    Alert.alert('dragged');
+  };
 
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
@@ -33,6 +38,10 @@ const Slider1 = () => {
     },
     onEnd: () => {
       isSliding.value = false;
+
+      if (translateX.value > SLIDER_WIDTH - KNOB_WIDTH - 3) {
+        runOnJS(onDraggedSuccess)();
+      }
     },
   });
 
