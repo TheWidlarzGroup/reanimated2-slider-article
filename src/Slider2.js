@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Alert, Button} from 'react-native';
 import {shadowStyle} from './style';
 import Knob from './Knob';
 import Animated, {
@@ -7,6 +7,8 @@ import Animated, {
   interpolate,
   Extrapolate,
   interpolateColor,
+  withTiming,
+  Easing,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import {useSlider} from './useSlider';
@@ -68,6 +70,42 @@ const Slider2 = () => {
 
       <View style={{marginTop: 40}}>
         <AnimatedText text={stepText} />
+      </View>
+
+      <View>
+        <Button
+          title="Slide to beginning"
+          onPress={() => {
+            isSliding.value = true;
+            translateX.value = withTiming(
+              0,
+              {
+                duration: 3000,
+                easing: Easing.bounce,
+              },
+              () => {
+                isSliding.value = false;
+              },
+            );
+          }}
+        />
+        <Button
+          title="Slide to end"
+          onPress={() => {
+            isSliding.value = true;
+
+            translateX.value = withTiming(
+              SLIDER_RANGE,
+              {
+                duration: 1000,
+                easing: Easing.linear,
+              },
+              () => {
+                isSliding.value = false;
+              },
+            );
+          }}
+        />
       </View>
     </>
   );
