@@ -5,9 +5,11 @@ import Animated, {
   useSharedValue,
   useAnimatedGestureHandler,
   useAnimatedStyle,
+  useDerivedValue,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import {clamp} from './utils';
+import AnimatedText from './AnimatedText';
 
 const SLIDER_WIDTH = 300;
 const KNOB_WIDTH = 70;
@@ -44,11 +46,21 @@ const Slider1 = () => {
     };
   });
 
+  const stepText = useDerivedValue(() => {
+    const sliderRange = SLIDER_WIDTH - KNOB_WIDTH;
+    const oneStepValue = sliderRange / MAX_RANGE;
+    const step = Math.ceil(translateX.value / oneStepValue);
+
+    return String(step);
+  });
+
   return (
     <View style={styles.slider}>
       <Animated.View style={[styles.progress, progressStyle]} />
       <PanGestureHandler onGestureEvent={onGestureEvent}>
-        <Animated.View style={[styles.knob, scrollTranslationStyle]} />
+        <Animated.View style={[styles.knob, scrollTranslationStyle]}>
+          <AnimatedText text={stepText} />
+        </Animated.View>
       </PanGestureHandler>
     </View>
   );
