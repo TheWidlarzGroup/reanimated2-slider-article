@@ -3,6 +3,8 @@
 The repository contains all the code of the application that we are building in this article:
 https://thewidlarzgroup.com/reanimated2-slider/
 
+:grey_exclamation: The article described the usage of reanimated v2 when it appeared. Currently, v3 is available.
+
 ### Starter instalation
 
 Do this part if you want to code along with the article from beginning
